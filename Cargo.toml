@@ -3,9 +3,9 @@ name = "mifetch"
 version = "0.1.0"
 authors = ["RealCodeCreate"] # Почту можно не писать, если не хочешь
 description = "Ultra-fast system fetch for sxwm and Gentoo/CachyOS"
-edition = "2024"
+edition = "2021"
 readme = "README.md"
-license = "MIT"
+license = "LGPL-3.0-or-later"
 
 [[bin]]
 name = "mifetch"
