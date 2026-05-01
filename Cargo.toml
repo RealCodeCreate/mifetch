@@ -1,7 +1,7 @@
 [package]
 name = "mifetch"
 version = "0.1.0"
-authors = ["RealCodeCreate"] # Почту можно не писать, если не хочешь
+authors = ["RealCodeCreate"]
 description = "Ultra-fast system fetch for sxwm and Gentoo/CachyOS"
 edition = "2021"
 readme = "README.md"
@@ -19,5 +19,3 @@ panic = 'abort'
 strip = true
 
 [dependencies]
-# Мы оставляем это поле пустым. Нам не нужны ни serde, ни chrono.
-# Мы читаем всё напрямую из системных файлов /proc, как настоящие ниндзя.
