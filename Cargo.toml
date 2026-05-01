@@ -1,0 +1,25 @@
+[package]
+name = "mifetch"
+version = "0.1.0"
+edition = "2021"
+authors = ["ТВОЙ_НИК"]
+description = "Ultra-fast system fetch utility for Linux"
+
+[dependencies]
+# Мы не используем зависимости, чтобы сохранить скорость и легкость
+
+[profile.release]
+# Максимальная оптимизация кода
+opt-level = 3
+
+# Link Time Optimization: позволяет компилятору оптимизировать связи между модулями
+lto = true
+
+# Сборка в один поток для более глубокой оптимизации
+codegen-units = 1
+
+# Заменяет механизм раскрутки стека при панике на немедленное завершение (уменьшает бинарник)
+panic = "abort"
+
+# Удаляет отладочные символы и таблицы имен из бинарника (аналог команды strip)
+strip = true
