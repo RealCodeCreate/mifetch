@@ -3,10 +3,10 @@ use std::io::{self, Read};
 use std::cmp::max;
 
 fn main() -> io::Result<()> {
-    // Цвета ANSI
-    let blue = "\x1b[34m";
-    let reset = "\x1b[0m";
-    let bold = "\x1b[1m";
+    // Цвета ANSI (Яркий голубой/циан)
+    let c = "\x1b[1;36m"; // Bold Cyan (Яркий голубой)
+    let r = "\x1b[0m";    // Reset
+    let white = "\x1b[1;37m"; // Bold White для акцентов
 
     // 1. Собираем данные
     let user = std::env::var("USER").unwrap_or_else(|_| "user".to_string());
@@ -48,27 +48,24 @@ fn main() -> io::Result<()> {
     }
     let ram = format!("{}M / {}M", total - available, total);
 
-    // 2. Вычисляем ширину правой колонки
+    // 2. Динамическая ширина
     let labels = ["os      ", "uptime  ", "kernel  ", "ram     "];
     let values = [&os_name, &uptime, &kernel, &ram];
-    
     let mut max_width = host_line.len();
     for (i, v) in values.iter().enumerate() {
         max_width = max(max_width, labels[i].len() + v.len());
     }
-    max_width += 2; // Запас для отступов
-
-    // 3. Рисуем рамку
+    max_width += 2; 
     let top = "━".repeat(max_width + 1);
-    let mid = "━".repeat(max_width + 1);
 
-    println!("┏━━━━━━━━━┳{}┓", top);
-    println!("┃ {B}  .~.   {R}┃ {V}{H:<W$}{R}┃", B=blue, R=reset, V=bold, H=host_line, W=max_width);
-    println!("┃ {B}  /V\\   {R}┃ os      {V:<W$}{R}┃", B=blue, R=reset, V=os_name, W=max_width - 8);
-    println!("┃ {B} // \\\\  {R}┃ uptime  {V:<W$}{R}┃", B=blue, R=reset, V=uptime, W=max_width - 8);
-    println!("┃ {B}/(   )\\ {R}┃ kernel  {V:<W$}{R}┃", B=blue, R=reset, V=kernel, W=max_width - 8);
-    println!("┃ {B} ^`~'^  {R}┃ ram     {V:<W$}{R}┃", B=blue, R=reset, V=ram, W=max_width - 8);
-    println!("┗━━━━━━━━━┻{}┛", mid);
+    // 3. Вывод (Яркая голубая рамка и текст)
+    println!("{c}┏━━━━━━━━━┳{top}┓{r}");
+    println!("{c}┃{r} {c}  .~.   {r} {c}┃{r} {white}{H:<W$}{r}{c}┃{r}", c=c, r=r, white=white, H=host_line, W=max_width);
+    println!("{c}┃{r} {c}  /V\\   {r} {c}┃{r} {c}os      {r}{OS:<W$}{c}┃{r}", c=c, r=r, OS=os_name, W=max_width - 8);
+    println!("{c}┃{r} {c} // \\\\  {r} {c}┃{r} {c}uptime  {r}{UP:<W$}{c}┃{r}", c=c, r=r, UP=uptime, W=max_width - 8);
+    println!("{c}┃{r} {c}/(   )\\ {r} {c}┃{r} {c}kernel  {r}{K:<W$}{c}┃{r}", c=c, r=r, K=kernel, W=max_width - 8);
+    println!("{c}┃{r} {c} ^`~'^  {r} {c}┃{r} {c}ram     {r}{RAM:<W$}{c}┃{r}", c=c, r=r, RAM=ram, W=max_width - 8);
+    println!("{c}┗━━━━━━━━━┻{top}┛{r}", c=c, top=top, r=r);
 
     Ok(())
 }
