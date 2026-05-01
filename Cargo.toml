@@ -1,25 +1,23 @@
 [package]
 name = "mifetch"
 version = "0.1.0"
-edition = "2021"
-authors = ["ТВОЙ_НИК"]
-description = "Ultra-fast system fetch utility for Linux"
+authors = ["RealCodeCreate"] # Почту можно не писать, если не хочешь
+description = "Ultra-fast system fetch for sxwm and Gentoo/CachyOS"
+edition = "2024"
+readme = "README.md"
+license = "MIT"
 
-[dependencies]
-# Мы не используем зависимости, чтобы сохранить скорость и легкость
+[[bin]]
+name = "mifetch"
+path = "src/main.rs"
 
 [profile.release]
-# Максимальная оптимизация кода
 opt-level = 3
-
-# Link Time Optimization: позволяет компилятору оптимизировать связи между модулями
 lto = true
-
-# Сборка в один поток для более глубокой оптимизации
 codegen-units = 1
-
-# Заменяет механизм раскрутки стека при панике на немедленное завершение (уменьшает бинарник)
-panic = "abort"
-
-# Удаляет отладочные символы и таблицы имен из бинарника (аналог команды strip)
+panic = 'abort'
 strip = true
+
+[dependencies]
+# Мы оставляем это поле пустым. Нам не нужны ни serde, ни chrono.
+# Мы читаем всё напрямую из системных файлов /proc, как настоящие ниндзя.
