@@ -1,7 +1,7 @@
 #!/bin/bash
 C='\033[38;5;'; C1="${C}31m"; C2="${C}74m"; C3="${C}117m"; C4="${C}195m"; R='\033[0m'
 . /etc/os-release
-read _ K _ < /proc/version
+K=$(uname -r)
 read _ T _ < /proc/meminfo; read _ A _ < <(grep Avail /proc/meminfo)
 T=$((T/1024)); A=$((A/1024))
 printf "${C1}┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
