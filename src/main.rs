@@ -2,18 +2,15 @@ use std::fs::File;
 use std::io::{Read, Write};
 
 fn main() {
-    // Используем заранее выделенный буфер на стеке для вывода
     let mut buffer = [0u8; 2048];
     let mut pos = 0;
 
-    // Цвета
     let c1 = "\x1b[38;5;31m";
     let c2 = "\x1b[38;5;74m";
     let c3 = "\x1b[38;5;117m";
     let c4 = "\x1b[38;5;195m";
     let r = "\x1b[0m";
 
-    // 1. Host (читаем напрямую без аллокаций String)
     let user = std::env::var("USER").unwrap_or_else(|_| "user".into());
     let mut hostname = [0u8; 64];
     let host_len = File::open("/proc/sys/kernel/hostname")
@@ -22,7 +19,6 @@ fn main() {
     let host_str = std::str::from_utf8(&hostname[..host_len]).unwrap_or("").trim();
     let host_line = format!("{}@{}", user, host_str);
 
-    // 2. OS (быстрый поиск в /etc/os-release)
     let mut os_buf = [0u8; 512];
     let mut os_name = "Linux";
     if let Ok(mut f) = File::open("/etc/os-release") {
@@ -37,7 +33,6 @@ fn main() {
         }
     }
 
-    // 3. Kernel (читаем /proc/sys/kernel/osrelease)
     let mut k_buf = [0u8; 128];
     let mut kernel = "unknown";
     if let Ok(mut f) = File::open("/proc/sys/kernel/osrelease") {
@@ -46,7 +41,6 @@ fn main() {
         }
     }
 
-    // 4. Uptime (парсим только первое число)
     let mut u_buf = [0u8; 64];
     let mut uptime = String::new();
     if let Ok(mut f) = File::open("/proc/uptime") {
@@ -61,7 +55,6 @@ fn main() {
         }
     }
 
-    // 5. RAM (MemTotal и MemAvailable)
     let mut m_buf = [0u8; 1024];
     let mut ram = String::new();
     if let Ok(mut f) = File::open("/proc/meminfo") {
@@ -81,7 +74,6 @@ fn main() {
         }
     }
 
-    // Формируем финальный вывод
     let output = format!(
 "{C1}┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃{C2}   .{C4}~{C2}.   {C1}┃  {C4}{H:<27} {C1}┃
@@ -94,6 +86,5 @@ fn main() {
         H=host_line, OS=os_name, UP=uptime, K=kernel, RAM=ram
     );
 
-    // Выводим всё за один системный вызов
     let _ = std::io::stdout().write_all(output.as_bytes());
 }
