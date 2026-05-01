@@ -2,7 +2,7 @@
 
 **mifetch** - это экстремально быстрый, легкий и оптимизированный скрипт для вывода системной информации, написанный на чистом Bash.
 
-![Uploading image.png…]()
+<img width="374" height="132" alt="image" src="https://github.com/user-attachments/assets/f2f348fd-04f3-4fab-ac39-adea891ef3e6" />
 
 ## ✨ Особенности
 
